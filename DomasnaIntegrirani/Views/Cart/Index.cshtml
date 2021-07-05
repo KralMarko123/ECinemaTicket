@@ -1,0 +1,82 @@
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<ECinemaTicket.Domain.StripeSettings> Stripe 
+
+@model ECinemaTicket.Domain.DTO.CartDto
+
+<h1 class="mb-3 ml-2">Your Cart:</h1>
+
+<div class="container">
+    
+    <div class="row ml-1 mb-3">
+        @*<a asp-controller="Cart" asp-action="OrderNow" class="btn btn-info">Order Now</a>*@
+
+        @if (Model.totalPrice != 0)
+        {
+            <form asp-controller="Cart" asp-action="PayOrder" method="post">
+                <article>
+                    <script src="https://checkout.stripe.com/checkout.js"
+                            class="stripe-button"
+                            data-key="@Stripe.Value.PublishableKey"
+                            data-locale="auto"
+                            data-description="ECinema Application Payment"
+                            data-amount="@(Model.totalPrice * 100)"
+                            data-label="Pay @Model.totalPrice MKD">
+                    </script>
+                </article>
+            </form>
+        }
+
+    </div>  
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Movie</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Sum</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.TicketInCarts.Count.Equals(0))
+                {
+                    <tr>
+                        <td colspan="6" style="font-weight: bold; text-transform: uppercase; text-align: center;">No Tickets in Cart</td>
+                    </tr>
+                }
+
+                @for (int i = 0; i < Model.TicketInCarts.Count; i++)
+                {
+                    var item = Model.TicketInCarts[i];
+
+                    <tr>
+                        <th scope="row">@(i+1)</th>
+                        <td>@item.Ticket.MovieName</td>
+                        <td>@item.Ticket.MoviePrice</td>
+                        <td>@item.Quantity</td>
+                        <td>@(item.Ticket.MoviePrice * item.Quantity)MKD</td>
+                        <td><a class="btn btn-danger" asp-route-id="@item.Ticket.Id" asp-action="DeleteTicketFromCart">Delete from Cart</a></td>
+                    </tr>
+
+
+                }
+
+
+            </tbody>
+
+            <tfoot class="table-borderless">
+                <tr>
+                    <th scope="col">Your Total:</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">@Model.totalPrice MKD</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

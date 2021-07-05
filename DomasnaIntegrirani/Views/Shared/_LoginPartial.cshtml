@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ECinemaTicket.Domain.Identity
+@inject SignInManager<ECinemaApplicationUser> SignInManager
+@inject UserManager<ECinemaApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" title="Manage">Hello @User.Identity.Name!</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link btn btn-link text-dark" asp-controller="account" asp-action="Logout">Logout</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link btn btn-primary text-white font-weight-bold" asp-controller="Cart" asp-action="Index">Your Cart</a>
+        </li>
+
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+
+    }
+</ul>

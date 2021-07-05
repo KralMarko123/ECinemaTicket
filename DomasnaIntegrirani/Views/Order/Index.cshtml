@@ -1,0 +1,59 @@
+﻿@model List<ECinemaTicket.Domain.DomainModels.Order>
+
+<h1 class="mb-3 ml-2">All Orders:</h1>
+
+<div class="container">
+
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Customer Details</th>
+                    <th scope="col">Number of Tickets</th>
+                    <th scope="col" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.Count.Equals(0))
+                {
+                    <tr>
+                        <td colspan="6" style="font-weight: bold; text-transform: uppercase; text-align: center;">No Orders Right Now</td>
+                    </tr>
+                }
+
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var item = Model[i];
+
+                    <tr>
+                        <th scope="row">@(i+1)</th>
+                        <td>@item.User.Email</td>
+
+                        @if (item.Tickets.Count != 0)
+                        {
+                            <td>@item.Tickets.Count</td>
+                        }
+                        @if (item.Tickets.Count == 0)
+                        {
+                            <td class="text-center font-weight-bold text-uppercase">No Tickets in this Order</td>
+                        }
+
+
+                        <td colspan="3" class="text-center">
+                            @if (item.Tickets.Count != 0)
+                            {
+                                <a class="btn btn-outline-dark" asp-route-orderId="@item.Id" asp-action="Details">View Order</a>
+                                <a class="btn btn-outline-info" asp-route-orderId="@item.Id" asp-action="CreateInvoice">Create Invoice</a>
+                            }
+                        </td>
+                    </tr>
+
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+</div>

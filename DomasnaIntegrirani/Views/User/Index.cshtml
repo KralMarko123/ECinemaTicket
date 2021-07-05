@@ -1,0 +1,32 @@
+﻿
+
+<div class="container">
+    <h1 class="m-4">Import Users</h1>
+
+    @if (User.IsInRole("Admin"))
+    {
+
+        <form asp-action="ImportUsers" asp-controller="User" method="post" enctype="multipart/form-data">
+            <div class="registerdiv">
+                <div class="form-group col-12">
+                    <input type="file" name="file" class="form-control" />
+                </div>
+
+                <br />
+
+                <div class="form-group">
+                    <div class="col-12 btn-submit">
+                        <button type="submit" class="btn btn-outline-success w-100">Import Excel File</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+     }
+
+    @if(User.IsInRole("User"))
+            {
+             <div>
+                <h3 class="m-4 text-danger">You have insufficient privileges for this action.</h3>
+            </div>
+            }
+</div>

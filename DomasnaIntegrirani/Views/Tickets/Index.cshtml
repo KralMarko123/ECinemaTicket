@@ -1,0 +1,75 @@
+﻿@model List<ECinemaTicket.Domain.DomainModels.Ticket>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-3 d-flex justify-content-between pb-3" style="border-bottom: solid 2px gainsboro; box-shadow: #333533 0px 5px 15px -15px">
+        <a class="btn btn-success  h-100 " asp-controller="Tickets" asp-action="Create">Add new Ticket</a>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-outline-dark   h-100 " asp-controller="Tickets" asp-action="ExportAllTickets">Export All Tickets</a>
+        }
+        @if (User.IsInRole("User"))
+        {
+            <a class="btn btn-outline-dark disabled h-100 " asp-controller="Tickets" asp-action="ExportAllTickets">Export All Tickets</a>
+
+        }
+
+        <a class="btn btn-outline-warning   h-100 " asp-controller="Tickets" asp-action="ExportTicketsByCategory">Export By Genre</a>
+
+        <div class="d-flex h-100 w-50 ">
+            <input type="date" class="form-control h-100 w-75 mr-3" />
+            <a class="btn btn-info h-100 text-white w-25 ">Filter By Date</a>
+        </div>
+    </div>
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        var item = Model[i];
+
+        //otvori red
+        if (i % 3 == 0)
+        {
+            @: <div class="row mb-3">
+        }
+
+
+                   <div class="col-4">
+                       <div class="card" style="width: 20rem; height: 35rem">
+                           <img class="card-img-top" src="@item.MovieImage" style="background-size: cover; width:100%; height: 80%;"/>
+
+                           <div class="card-body m-1 p-2">
+                               <h3 class="card-title font-weight-bold text-uppercase">@item.MovieName</h3>
+                               <h5><i>Price:</i> <b>@item.MoviePrice MKD</b></h5>
+                               <h5><i>Category:</i> <b>@item.MovieCategory</b></h5>
+
+                           </div>
+                          
+
+                           <div class="card-footer m-1 p-2 d-flex justify-content-between align-items-center">
+                               @if (User.IsInRole("User") || User.IsInRole("Admin"))
+                               {
+                                   <a class="btn btn-info font-weight-bold w-auto m-1" asp-controller="Tickets" asp-action="AddTicketToCart" asp-route-Id="@item.Id">Add Ticket to Cart</a>
+                               }
+                               <a class="btn btn-secondary font-weight-bold w-auto m-1" asp-controller="Tickets" asp-action="Edit" asp-route-Id="@item.Id">Edit Ticket</a>
+                               <a class="btn btn-danger font-weight-bold w-auto m-1" asp-controller="Tickets" asp-action="Delete" asp-route-id="@item.Id">Delete Ticket</a>
+                           </div>
+                       </div>
+                   </div>
+
+
+        //zatvori red
+        if (i % 3 == 2)
+        {
+            @: </div>
+        }
+    }
+
+</div>
+
+
