@@ -21,7 +21,7 @@ namespace DomasnaIntegrirani.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult ImportUsers(IFormFile file)
         {
             //make a copy

@@ -13,17 +13,14 @@ namespace DomasnaIntegrirani.Controllers
     {
         private readonly UserManager<ECinemaApplicationUser> userManager;
         private readonly SignInManager<ECinemaApplicationUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
 
         public AccountController(UserManager<ECinemaApplicationUser> userManager,
-            SignInManager<ECinemaApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager
+            SignInManager<ECinemaApplicationUser> signInManager
             )
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.roleManager = roleManager;
         }
       
        
@@ -52,20 +49,17 @@ namespace DomasnaIntegrirani.Controllers
                         UserName = request.Email,
                         NormalizedUserName = request.Email,
                         Email = request.Email,
-                        PhoneNumber = request.PhoneNumber,
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
                         FirstName = request.FirstName,
                         LastName = request.LastName,
-                        Role = "User",
                         UserCart = new Cart()
                     };
                     var result = await userManager.CreateAsync((ECinemaApplicationUser)user, request.Password);
                     
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, "User");
-                        return RedirectToAction("Login");
+                        return RedirectToAction("NewAccount");
                     }
                     else
                     {
@@ -148,7 +142,11 @@ namespace DomasnaIntegrirani.Controllers
         }
 
 
-
+        //NEW ACCOUNT
+        public IActionResult NewAccount()
+        {
+            return View();
+        }
 
     }
 }

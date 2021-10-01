@@ -14,32 +14,32 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="MovieName" class="control-label"></label>
+                <label asp-for="MovieName" class="control-label">Name</label>
                 <input asp-for="MovieName" class="form-control" />
                 <span asp-validation-for="MovieName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MovieImage" class="control-label"></label>
-                <input asp-for="MovieImage" class="form-control" />
+                <label asp-for="MovieImage" class="control-label">Image (Poster)</label>
+                <input asp-for="MovieImage" class="form-control" placeholder="Insert a link here..."/>
                 <span asp-validation-for="MovieImage" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MovieDescription" class="control-label"></label>
+                <label asp-for="MovieDescription" class="control-label">Description</label>
                 <input asp-for="MovieDescription" class="form-control" />
                 <span asp-validation-for="MovieDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MoviePrice" class="control-label"></label>
+                <label asp-for="MoviePrice" class="control-label">Price</label>
                 <input asp-for="MoviePrice" class="form-control" />
                 <span asp-validation-for="MoviePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MovieRating" class="control-label"></label>
+                <label asp-for="MovieRating" class="control-label">Rating</label>
                 <input asp-for="MovieRating" class="form-control" />
                 <span asp-validation-for="MovieRating" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MovieCategory" class="control-label"></label>
+                <label asp-for="MovieCategory" class="control-label">Category</label>
                 <input asp-for="MovieCategory" class="form-control" />
                 <span asp-validation-for="MovieCategory" class="text-danger"></span>
             </div>

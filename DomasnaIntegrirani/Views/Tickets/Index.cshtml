@@ -52,10 +52,7 @@
                           
 
                            <div class="card-footer m-1 p-2 d-flex justify-content-between align-items-center">
-                               @if (User.IsInRole("User") || User.IsInRole("Admin"))
-                               {
-                                   <a class="btn btn-info font-weight-bold w-auto m-1" asp-controller="Tickets" asp-action="AddTicketToCart" asp-route-Id="@item.Id">Add Ticket to Cart</a>
-                               }
+                               <a class="btn btn-info font-weight-bold w-auto m-1" asp-controller="Tickets" asp-action="AddTicketToCart" asp-route-Id="@item.Id">Add Ticket to Cart</a>
                                <a class="btn btn-secondary font-weight-bold w-auto m-1" asp-controller="Tickets" asp-action="Edit" asp-route-Id="@item.Id">Edit Ticket</a>
                                <a class="btn btn-danger font-weight-bold w-auto m-1" asp-controller="Tickets" asp-action="Delete" asp-route-id="@item.Id">Delete Ticket</a>
                            </div>

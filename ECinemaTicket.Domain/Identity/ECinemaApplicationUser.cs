@@ -14,8 +14,6 @@ namespace ECinemaTicket.Domain.Identity
 
         public string ConfirmPassword { get; set; }
 
-        public string Address { get; set; }
-
         public virtual Cart UserCart { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

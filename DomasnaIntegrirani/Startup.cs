@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Stripe;
+using System.Threading.Tasks;
 
 namespace DomasnaIntegrirani
 {
@@ -26,6 +27,7 @@ namespace DomasnaIntegrirani
             emailService = new EmailSettings();
             Configuration = configuration;
             Configuration.GetSection("EmailSettings").Bind(emailService);
+          
         }
 
         public IConfiguration Configuration { get; }
@@ -36,16 +38,19 @@ namespace DomasnaIntegrirani
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ECinemaApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity<ECinemaApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            
+            //services.AddIdentity<ECinemaApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
 
 
-            //services.AddScoped<EmailSettings>(es => emailService);
+            //services.AddScoped(es => emailService);
             //services.AddScoped<IEmailService, EmailService>(email => new EmailService(emailService));
             //services.AddScoped<IBackgroundEmailSender, BackgroundEmailSender>();
             //services.AddHostedService<ConsumeScopedHostedService>();
@@ -57,8 +62,8 @@ namespace DomasnaIntegrirani
             services.AddTransient<ICartService, CartService>();
             services.AddTransient<IOrderService, ECinemaTicket.Services.Implementation.OrderService>();
 
-         
-            
+
+
 
 
 
@@ -77,6 +82,7 @@ namespace DomasnaIntegrirani
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [System.Obsolete]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
@@ -108,5 +114,58 @@ namespace DomasnaIntegrirani
                 endpoints.MapRazorPages();
             });
         }
+
+        //private async Task CreateRolesandUsers()
+        //{
+        //    bool x = await roleManager.RoleExistsAsync("Admin");
+        //    if (!x)
+        //    {
+        //        // first we create Admin role    
+        //        var role = new IdentityRole();
+        //        role.Name = "Admin";
+        //        await roleManager.CreateAsync(role);
+
+        //        //Here we create a Admin super user who will maintain the website                   
+
+        //        var user = new ECinemaApplicationUser();
+        //        user.UserName = "admin";
+        //        user.Email = "admin@admin.com";
+
+        //        string userPWD = "@admin123";
+
+        //        IdentityResult chkUser = await userManager.CreateAsync(user, userPWD);
+
+        //        //Add default User to Role Admin    
+        //        if (chkUser.Succeeded)
+        //        {
+        //            var result1 = await userManager.AddToRoleAsync(user, "Admin");
+        //        }
+        //    }
+
+        //    bool y = await roleManager.RoleExistsAsync("User");
+        //    if (!x)
+        //    {
+        //        // first we create Admin role    
+        //        var role = new IdentityRole();
+        //        role.Name = "User";
+        //        await roleManager.CreateAsync(role);
+
+        //        //Here we create a Admin super user who will maintain the website                   
+
+        //        var user = new ECinemaApplicationUser();
+        //        user.UserName = "user";
+        //        user.Email = "user@user.com";
+
+        //        string userPWD = "@user123";
+
+        //        IdentityResult chkUser = await userManager.CreateAsync(user, userPWD);
+
+        //        //Add default User to Role Admin    
+        //        if (chkUser.Succeeded)
+        //        {
+        //            var result2 = await userManager.AddToRoleAsync(user, "User");
+        //        }
+        //    }
+        //}
     }
 }
